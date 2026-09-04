@@ -34,6 +34,7 @@ function formatDate(value) {
 }
 
 function imageUrl(game) {
+  if (game?.imageUrl) return game.imageUrl;
   return game?.bggId ? state.images[String(game.bggId)] || '' : '';
 }
 
@@ -83,7 +84,7 @@ function renderMainVote(data) {
       <div class="cover-wrap">${coverHtml(game)}</div>
       <div class="game-copy">
         <div class="game-name">${esc(game.name)}</div>
-        <div class="game-note">Jeg vil gerne spille dette</div>
+        <div class="game-note">${esc(game.note || 'Jeg vil gerne spille dette')}</div>
       </div>
       <input type="checkbox" value="${esc(game.id)}" ${state.selections.has(game.id) ? 'checked' : ''}>
     </label>
@@ -136,7 +137,7 @@ function renderTiebreak(data) {
       <div class="cover-wrap">${coverHtml(game)}</div>
       <div class="game-copy">
         <div class="game-name">${esc(game.name)}</div>
-        <div class="game-note">Vælg dette spil i omstemningen</div>
+        <div class="game-note">${esc(game.note || 'Vælg dette spil i omstemningen')}</div>
       </div>
       <input type="radio" name="tiebreak" value="${esc(game.id)}" ${state.tiebreakChoice === game.id ? 'checked' : ''}>
     </label>
