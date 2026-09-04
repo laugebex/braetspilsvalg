@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="da">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#111827" />
+  <title>Brætspilsvalg</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <main class="shell">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">Månedens brætspil</p>
+        <h1>Brætspilsvalg</h1>
+        <p id="poll-title" class="subtitle">Indlæser afstemning…</p>
+      </div>
+      <div id="voter-badge" class="voter-badge hidden"></div>
+    </header>
+
+    <nav class="tabs" aria-label="Navigation">
+      <button class="tab active" data-tab="vote">Stem</button>
+      <button class="tab" data-tab="results">Resultat</button>
+      <button class="tab" data-tab="history">Historik & statistik</button>
+    </nav>
+
+    <section id="setup-warning" class="notice hidden"></section>
+
+    <section id="vote" class="panel active-panel">
+      <div class="card intro-card">
+        <label for="name">Dit navn</label>
+        <input id="name" autocomplete="name" maxlength="40" placeholder="Fx Lauge" />
+        <p class="help">Stem på alle de spil, du gerne vil spille. Du kan ændre din stemme senere.</p>
+      </div>
+      <div id="games" class="games"></div>
+      <div class="sticky-action">
+        <button id="save-vote" class="primary">Gem mine stemmer</button>
+        <span id="save-status" class="status" aria-live="polite"></span>
+      </div>
+    </section>
+
+    <section id="results" class="panel">
+      <div id="results-content"></div>
+    </section>
+
+    <section id="history" class="panel">
+      <div id="history-content"></div>
+    </section>
+  </main>
+  <script src="/app.js" defer></script>
+</body>
+</html>
