@@ -21,6 +21,14 @@
     });
   }
 
+  async function firstWorkingUrl(game) {
+    const candidates = [game.imageUrl, ...(game.imageFallbackUrls || [])].filter(Boolean);
+    for (const url of candidates) {
+      if (await checkImage(url)) return url;
+    }
+    return null;
+  }
+
   async function runImageCheck() {
     try {
       const response = await fetch('/api/config', { cache: 'no-store' });
@@ -29,13 +37,18 @@
       const poll = config.polls?.find((p) => p.id === config.activePollId);
       if (!poll) return;
 
-      const checks = await Promise.all((poll.games || []).map(async (game) => ({
-        id: game.id,
-        name: game.name,
-        kind: game.imageKind || '',
-        url: game.imageUrl || '',
-        ok: game.imageKind === 'board' && await checkImage(game.imageUrl)
-      })));
+      const checks = await Promise.all((poll.games || []).map(async (game) => {
+        const workingUrl = game.imageKind === 'board' ? await firstWorkingUrl(game) : null;
+        return {
+          id: game.id,
+          name: game.name,
+          kind: game.imageKind || '',
+          primaryUrl: game.imageUrl || '',
+          workingUrl,
+          usedFallback: Boolean(workingUrl && workingUrl !== game.imageUrl),
+          ok: Boolean(workingUrl)
+        };
+      }));
 
       window.__braetspilsvalgImageHealth = checks;
       const broken = checks.filter((item) => !item.ok);
@@ -44,7 +57,9 @@
       if (broken.length) {
         console.warn('Brætspilsvalg: billedtjek fandt problemer:', broken.map((x) => x.name));
       } else {
+        const fallbacks = checks.filter((x) => x.usedFallback).map((x) => x.name);
         console.info(`Brætspilsvalg: ${checks.length} spilbilleder kontrolleret OK.`);
+        if (fallbacks.length) console.info('Reservebillede anvendes for:', fallbacks);
       }
     } catch (error) {
       console.warn('Brætspilsvalg: billedtjek kunne ikke gennemføres.', error);
