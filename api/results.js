@@ -1,5 +1,5 @@
-const { json, getPoll, normalizeName, voterKey, parseVotes, resultsForPoll } = require('./_shared');
-const { command, votesKey } = require('./_redis');
+const { json, getPoll, normalizeName, voterKey, parseVotes, resultsForPoll } = require('../lib/shared');
+const { command, votesKey } = require('../lib/redis');
 
 module.exports = async function handler(req, res) {
   if (req.method !== 'GET') return json(res, 405, { error: 'Method not allowed' });
