@@ -13,20 +13,23 @@
           "id": "quartermaster-general-1914",
           "name": "Quartermaster General: 1914",
           "bggId": 208773,
-          "imageUrl": "https://www.spellenvariant.nl/media/catalog/product/cache/05613de704b6a643e80293c2653b5bd9/b/g/bgg_6017.jpg",
+          "imageKind": "board",
+          "imageUrl": "https://cdn.anyfinder.eu/assets/CW6odOOsAGVz0EPDN3a4h2JTkBxshKuQaI9C5KkxnQubxjCimx7b2oFNzaCQEpsO?height=768",
           "note": "Kortdrevet spil om 1. verdenskrig for fem stormagter fordelt på to hold."
         },
         {
           "id": "hansa-teutonica",
           "name": "Hansa Teutonica",
           "bggId": 43015,
-          "imageUrl": "https://down-id.img.susercontent.com/file/02241ba3386fb626f91391440eedcb82",
+          "imageKind": "board",
+          "imageUrl": "https://cdn.anyfinder.eu/assets/vnyIOeUhk7BPt29ATCxwn7yely41HjNW0t2fW8vgHWqMMzIsbehodHK3uWBbpf3p?height=768",
           "note": "Handelsruter, blokeringer og løbende forbedring af dine muligheder."
         },
         {
           "id": "el-grande",
           "name": "El Grande",
           "bggId": 93,
+          "imageKind": "board",
           "imageUrl": "https://spellenbunker.nl/app/uploads/WhatsApp-Image-2024-08-26-at-10.35.04-1024x1024.jpeg",
           "note": "Områdekontrol i Spanien, hvor flertal og timing er afgørende."
         },
@@ -34,63 +37,72 @@
           "id": "inis",
           "name": "Inis",
           "bggId": 155821,
-          "imageUrl": "https://shop.loufoque.fr/cdn/shop/files/inisrecto.jpg?v=1747473761",
+          "imageKind": "board",
+          "imageUrl": "https://static.fnac-static.com/multimedia/Images/ES/NR/13/c6/4e/5162515/1520-3.jpg",
           "note": "Kortdraft og områdekontrol med flere forskellige veje til sejr."
         },
         {
           "id": "blood-rage",
           "name": "Blood Rage",
           "bggId": 170216,
-          "imageUrl": "https://www.boardgamehalv.com/wp-content/uploads/2020/10/BloodRage_BoardGame_PlayArea.jpg",
+          "imageKind": "board",
+          "imageUrl": "https://d3ur8vwbngpbs7.cloudfront.net/assets/editorial/2021/05/best-godly-board-games-blood-rage.jpg",
           "note": "Kortdraft, klanopgraderinger og kamp om områder før Ragnarök."
         },
         {
           "id": "chaos-in-the-old-world",
           "name": "Chaos in the Old World",
           "bggId": 43111,
-          "imageUrl": "https://www.dicetower.com/sites/default/files/styles/original_medium/public/bgg_images/pic1318481.jpg?itok=FTSo97Nv",
+          "imageKind": "board",
+          "imageUrl": "https://therewillbe.games/images/member_images/Jackwraith/pic831745.jpg",
           "note": "Fem asymmetriske kaosguder kæmper om at korrumpere den samme verden."
         },
         {
           "id": "agricola",
           "name": "Agricola",
           "bggId": 31260,
-          "imageUrl": "https://thistletavern.com/cdn/shop/files/MFG3515_1.jpg?v=1706811742&width=940",
+          "imageKind": "board",
+          "imageUrl": "https://www.vindjeu.eu/prd/wp-content/uploads/2011/05/1365-Agricola-2.jpg",
           "note": "Arbejderplacering, hvor du bygger gård, skaffer mad og udvikler familien."
         },
         {
           "id": "nexus-ops",
           "name": "Nexus Ops",
           "bggId": 15363,
-          "imageUrl": "https://ubarose.com/media/reviews/photos/original/78/91/ac/nexus-ops-top-of-the-ops-44-1527861299.jpg",
+          "imageKind": "board",
+          "imageUrl": "https://www.boardgamequest.com/wp-content/uploads/2024/09/Nexus-Ops-Gameplay-2.jpg",
           "note": "Sci-fi-krigsspil med missioner, kampe og direkte konflikt."
         },
         {
           "id": "moon-colony-bloodbath",
           "name": "Moon Colony Bloodbath",
           "bggId": 425549,
-          "imageUrl": "https://www.boardgamebliss.com/cdn/shop/files/pic8367369.png?crop=center&height=1200&v=1729259383&width=1200",
+          "imageKind": "board",
+          "imageUrl": "https://www.vindjeu.eu/prd/wp-content/uploads/2025/05/4079-Moon-Colony-10.jpg",
           "note": "Opbyg en månekoloni, mens hændelser og katastrofer ændrer vilkårene."
         },
         {
           "id": "ethnos",
           "name": "Ethnos",
           "bggId": 206718,
+          "imageKind": "board",
           "imageUrl": "https://boardgamefever.co/cdn/shop/files/IMG-1503.jpg?v=1740189990&width=1946",
-          "note": "Saml sæt af folkeslag og brug dem til at opnå kontrol over områder."
+          "note": "2nd Edition. Saml sæt af folkeslag og brug dem til at opnå kontrol over områder."
         },
         {
           "id": "endeavor-age-of-sail",
           "name": "Endeavor: Age of Sail",
           "bggId": 233398,
-          "imageUrl": "https://cdn.anyfinder.eu/assets/KMg7CF8FWONhfjFAtc2iJuNMtPc2lUwSAK6snrU2qfgwow1O2nAFsOtIe6iQHLAT",
+          "imageKind": "board",
+          "imageUrl": "https://i0.wp.com/elusivemeeple.com/wp-content/uploads/2018/11/img_0708.jpg?fit=900%2C1200&ssl=1",
           "note": "Udbyg din nation, åbn nye ruter og konkurrér om byer og ressourcer."
         },
         {
           "id": "architects-of-the-west-kingdom",
           "name": "Architects of the West Kingdom",
           "bggId": 236457,
-          "imageUrl": "https://monopoliswonder.com/sites/default/files/architects%20of%20the%20west%20kingdom1.png",
+          "imageKind": "board",
+          "imageUrl": "https://cdn.zatu.com/wp-content/uploads/2022/05/17033327/ARCHITECTS-OF-THE-WEST-KINGDOM-board.png",
           "note": "Arbejderplacering, hvor dine arbejdere kan samles på felter og fanges af andre."
         }
       ]
