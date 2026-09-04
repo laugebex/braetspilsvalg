@@ -1,0 +1,11 @@
+const assert = require('assert');
+const { normalizeName, voterKey, parseVotes, resultsForPoll } = require('./api/_shared');
+assert.equal(normalizeName('  Lauge   Bechshøft '), 'Lauge Bechshøft');
+assert.equal(voterKey(' LAUGE '), voterKey('Lauge'));
+const votes = parseVotes(['lauge', JSON.stringify({name:'Lauge', selections:['inis']}), 'morten', JSON.stringify({name:'Morten', selections:['inis','el-grande']})]);
+assert.equal(votes.length, 2);
+const poll = { id:'x', title:'X', status:'closed', games:[{id:'inis',name:'Inis'},{id:'el-grande',name:'El Grande'}], played:['inis'] };
+const r = resultsForPoll(poll, votes);
+assert.equal(r.games[0].name, 'Inis');
+assert.deepEqual(r.games[0].voters, ['Lauge','Morten']);
+console.log('All tests passed');
