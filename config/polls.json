@@ -1,0 +1,24 @@
+{
+  "activePollId": "2026-09",
+  "polls": [
+    {
+      "id": "2026-09",
+      "title": "September 2026",
+      "status": "open",
+      "played": [],
+      "games": [
+        { "id": "hansa-teutonica", "name": "Hansa Teutonica" },
+        { "id": "el-grande", "name": "El Grande" },
+        { "id": "inis", "name": "Inis" },
+        { "id": "blood-rage", "name": "Blood Rage" },
+        { "id": "chaos-in-the-old-world", "name": "Chaos in the Old World" },
+        { "id": "agricola", "name": "Agricola" },
+        { "id": "nexus-ops", "name": "Nexus Ops" },
+        { "id": "moon-colony-bloodbath", "name": "Moon Colony Bloodbath" },
+        { "id": "ethnos", "name": "Ethnos" },
+        { "id": "endeavor-age-of-sail", "name": "Endeavor: Age of Sail" },
+        { "id": "architects-of-the-west-kingdom", "name": "Architects of the West Kingdom" }
+      ]
+    }
+  ]
+}
