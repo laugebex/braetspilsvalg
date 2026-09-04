@@ -21,8 +21,18 @@ module.exports = async function handler(req, res) {
       ? [...new Set(body.selections.filter((id) => allowed.has(id)))]
       : [];
 
-    const vote = { name, selections, updatedAt: new Date().toISOString() };
-    await command(['HSET', votesKey(poll.id), voterKey(name), JSON.stringify(vote)]);
+    const vote = { name, selections, createdAt: new Date().toISOString() };
+    const inserted = await command([
+      'HSETNX',
+      votesKey(poll.id),
+      voterKey(name),
+      JSON.stringify(vote)
+    ]);
+
+    if (Number(inserted) !== 1) {
+      return json(res, 409, { error: 'Du har allerede stemt. Din stemme kan ikke ændres.' });
+    }
+
     const updated = await loadElection(poll);
     return json(res, 200, { ok: true, phase: updated.phase, complete: updated.complete });
   } catch (error) {
