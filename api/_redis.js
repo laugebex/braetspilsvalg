@@ -1,10 +1,17 @@
+function credentials() {
+  return {
+    url: process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL,
+    token: process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN
+  };
+}
+
 function storageConfigured() {
-  return Boolean(process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN);
+  const { url, token } = credentials();
+  return Boolean(url && token);
 }
 
 async function command(args) {
-  const url = process.env.UPSTASH_REDIS_REST_URL;
-  const token = process.env.UPSTASH_REDIS_REST_TOKEN;
+  const { url, token } = credentials();
   if (!url || !token) {
     const error = new Error('STORAGE_NOT_CONFIGURED');
     error.code = 'STORAGE_NOT_CONFIGURED';
