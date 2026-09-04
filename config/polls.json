@@ -9,17 +9,83 @@
       "status": "open",
       "played": [],
       "games": [
-        { "id": "hansa-teutonica", "name": "Hansa Teutonica", "bggId": 43015 },
-        { "id": "el-grande", "name": "El Grande", "bggId": 93 },
-        { "id": "inis", "name": "Inis", "bggId": 155821 },
-        { "id": "blood-rage", "name": "Blood Rage", "bggId": 170216 },
-        { "id": "chaos-in-the-old-world", "name": "Chaos in the Old World", "bggId": 43111 },
-        { "id": "agricola", "name": "Agricola", "bggId": 31260 },
-        { "id": "nexus-ops", "name": "Nexus Ops", "bggId": 15363 },
-        { "id": "moon-colony-bloodbath", "name": "Moon Colony Bloodbath", "bggId": 425549 },
-        { "id": "ethnos", "name": "Ethnos", "bggId": 206718 },
-        { "id": "endeavor-age-of-sail", "name": "Endeavor: Age of Sail", "bggId": 233398 },
-        { "id": "architects-of-the-west-kingdom", "name": "Architects of the West Kingdom", "bggId": 236457 }
+        {
+          "id": "hansa-teutonica",
+          "name": "Hansa Teutonica",
+          "bggId": 43015,
+          "imageUrl": "https://down-id.img.susercontent.com/file/02241ba3386fb626f91391440eedcb82",
+          "note": "Byg handelsruter, blokér hinanden og opgradér dine handlinger."
+        },
+        {
+          "id": "el-grande",
+          "name": "El Grande",
+          "bggId": 93,
+          "imageUrl": "https://www.oakenvault.com/cdn/shop/files/LPFI746_ElGrande_EN__BOX_1000.png?v=1700041454&width=1000",
+          "note": "Klassisk area control: placer riddere og kæmp om flertallet i Spanien."
+        },
+        {
+          "id": "inis",
+          "name": "Inis",
+          "bggId": 155821,
+          "imageUrl": "https://shop.loufoque.fr/cdn/shop/files/inisrecto.jpg?v=1747473761",
+          "note": "Kortdraft, områdekontrol og tre forskellige veje til sejr."
+        },
+        {
+          "id": "blood-rage",
+          "name": "Blood Rage",
+          "bggId": 170216,
+          "imageUrl": "https://d.scdn.gr/images/sku_main_images/009008/9008327/20251205153714_epitrapezio_paichnidi_blood_rage_core_game_gia_2_4_paiktes_13_eton_blr001_cmnblr001_en_cool_mini_or_not.jpeg",
+          "note": "Draft kort, opgradér din klan og kæmp i Ragnarök."
+        },
+        {
+          "id": "chaos-in-the-old-world",
+          "name": "Chaos in the Old World",
+          "bggId": 43111,
+          "imageUrl": "https://www.dicetower.com/sites/default/files/styles/original_medium/public/bgg_images/pic1318481.jpg?itok=FTSo97Nv",
+          "note": "Asymmetriske kaosguder kæmper om at korrumpere den samme verden."
+        },
+        {
+          "id": "agricola",
+          "name": "Agricola",
+          "bggId": 31260,
+          "imageUrl": "https://www.eltallerdelmodelista.com/68203-thickbox_default/agricola.jpg",
+          "note": "Worker placement: byg gård, skaf mad og udvikl din familie."
+        },
+        {
+          "id": "nexus-ops",
+          "name": "Nexus Ops",
+          "bggId": 15363,
+          "imageUrl": "https://ubarose.com/media/reviews/photos/original/78/91/ac/nexus-ops-top-of-the-ops-44-1527861299.jpg",
+          "note": "Hurtigt sci-fi-krigsspil med missioner, kampe og direkte konflikt."
+        },
+        {
+          "id": "moon-colony-bloodbath",
+          "name": "Moon Colony Bloodbath",
+          "bggId": 425549,
+          "imageUrl": "https://www.boardgamebliss.com/cdn/shop/files/pic8367369.png?crop=center&height=1200&v=1729259383&width=1200",
+          "note": "Byg en månekoloni, mens katastrofer hele tiden vælter dine planer."
+        },
+        {
+          "id": "ethnos",
+          "name": "Ethnos",
+          "bggId": 206718,
+          "imageUrl": "https://www.towertacticgames.com/cdn/shop/files/ETHNOS-EN_24_11zon_535x.webp?v=1709299773",
+          "note": "Saml sæt af folkeslag og brug dem til at tage kontrol over områder."
+        },
+        {
+          "id": "endeavor-age-of-sail",
+          "name": "Endeavor: Age of Sail",
+          "bggId": 233398,
+          "imageUrl": "https://cdn.anyfinder.eu/assets/KMg7CF8FWONhfjFAtc2iJuNMtPc2lUwSAK6snrU2qfgwow1O2nAFsOtIe6iQHLAT",
+          "note": "Udbyg din nation, åbn ruter og konkurrér om byer og ressourcer."
+        },
+        {
+          "id": "architects-of-the-west-kingdom",
+          "name": "Architects of the West Kingdom",
+          "bggId": 236457,
+          "imageUrl": "https://regatuljocurilor.ro/4930-large_default/architects-of-the-west-kingdom-2018-standard-edition.jpg",
+          "note": "Worker placement med arbejdere, der kan fanges af de andre."
+        }
       ]
     }
   ]
