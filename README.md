@@ -1,29 +1,30 @@
 # Brætspilsvalg
 
-En lille fast webapp til månedlige brætspilsafstemninger.
+Fast webapp til vores månedlige brætspilsafstemninger.
 
-## Funktioner
+## Sådan fungerer den
 
-- Samme URL hver måned
-- Stem på alle de spil, man gerne vil spille
-- En person kan ændre sin stemme ved at bruge samme navn igen
-- Live-resultat med **navnene på alle, der har stemt på hvert spil**
-- Resultatet af en åben afstemning vises først, når man selv har stemt
-- Historik pr. måned
-- Statistik for spil og personer over tid
-- Spillisten styres i `config/polls.json`, så den kan vedligeholdes direkte via GitHub/chat
+- Faste deltagere: Martin, Carsten, Nordbek, Peter og Lauge
+- Hver afstemning knyttes til en konkret spilledato
+- Man stemmer på alle de spil, man gerne vil spille
+- Spil vises med coverbilleder hentet via BoardGameGeek
+- Resultatet er skjult, indtil alle fem har stemt
+- Når alle fem har stemt, lukkes grundafstemningen automatisk
+- Ved delt førsteplads starter appen en omstemning mellem de førende spil
+- I en omstemning vælger hver person præcis ét spil
+- Hvis en omstemning stadig ender lige, starter næste runde automatisk blandt de nye ligespillere
+- Resultat og historik viser, hvem der har stemt på hvad
+- Historik og statistik bevares på tværs af afstemninger
+
+## Ny spilledato / ny afstemning
+
+Afstemninger styres i `config/polls.json`. Behold gamle poll-objekter, tilføj et nyt, og sæt `activePollId` til det nye id. Feltet `date` bruger formatet `YYYY-MM-DD`.
+
+Spil kan tilføjes med `id`, `name` og et BoardGameGeek `bggId`.
 
 ## Data
 
-Stemmer gemmes i Upstash Redis via Vercel Marketplace. Krævede miljøvariabler:
+Stemmer gemmes i Upstash Redis. Appen understøtter begge Vercel-navngivninger:
 
-- `UPSTASH_REDIS_REST_URL`
-- `UPSTASH_REDIS_REST_TOKEN`
-
-Vercel/Upstash kan injicere dem automatisk, når integrationen kobles til projektet.
-
-## Ny måned
-
-Tilføj et nyt poll-objekt i `config/polls.json`, behold de gamle objekter, og sæt `activePollId` til den nye måned. Historikken bevares dermed.
-
-`played` er en liste af game-id'er, der faktisk blev spillet den måned.
+- `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN`
+- `KV_REST_API_URL` + `KV_REST_API_TOKEN`
