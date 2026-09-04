@@ -1,0 +1,11 @@
+{
+  "name": "braetspilsvalg",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "test": "node tests.js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
