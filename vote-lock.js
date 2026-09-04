@@ -1,5 +1,5 @@
 (() => {
-  function lockSubmittedVote() {
+  function replaceSubmittedVoteWithReceipt() {
     const content = document.querySelector('#vote-content');
     if (!content) return;
 
@@ -8,29 +8,22 @@
 
     if (!updateButton) return;
 
-    content.querySelectorAll('.game input[type="checkbox"]').forEach((input) => {
-      input.disabled = true;
-    });
-
-    content.querySelectorAll('.game').forEach((game) => {
-      game.classList.add('vote-locked');
-      game.setAttribute('aria-disabled', 'true');
-    });
-
-    const help = content.querySelector('.card .help');
-    if (help) help.textContent = 'Din stemme er afgivet og kan ikke ændres.';
-
-    const sticky = content.querySelector('.sticky-action');
-    if (sticky) {
-      sticky.innerHTML = '<strong class="status">Din stemme er gemt og låst.</strong>';
-    }
+    content.innerHTML = `
+      <div class="card success-card" style="text-align:center; padding:28px 20px">
+        <div aria-hidden="true" style="font-size:40px; line-height:1; font-weight:900; margin-bottom:10px">✓</div>
+        <div class="winner">Stemmen er afgivet</div>
+        <p class="help" style="margin-bottom:0">Din stemme er gemt og kan ikke ændres.</p>
+      </div>
+    `;
   }
 
   function start() {
     const content = document.querySelector('#vote-content');
     if (!content) return;
-    lockSubmittedVote();
-    new MutationObserver(lockSubmittedVote).observe(content, { childList: true, subtree: true });
+
+    replaceSubmittedVoteWithReceipt();
+    new MutationObserver(replaceSubmittedVoteWithReceipt)
+      .observe(content, { childList: true, subtree: true });
   }
 
   if (document.readyState === 'loading') {
