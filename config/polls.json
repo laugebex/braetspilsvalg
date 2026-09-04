@@ -10,6 +10,13 @@
       "played": [],
       "games": [
         {
+          "id": "quartermaster-general-1914",
+          "name": "Quartermaster General: 1914",
+          "bggId": 208773,
+          "imageUrl": "https://www.spellenvariant.nl/media/catalog/product/cache/05613de704b6a643e80293c2653b5bd9/b/g/bgg_6017.jpg",
+          "note": "Kortdrevet 1. verdenskrig: to hold, fem stormagter og stram håndstyring."
+        },
+        {
           "id": "hansa-teutonica",
           "name": "Hansa Teutonica",
           "bggId": 43015,
@@ -48,7 +55,7 @@
           "id": "agricola",
           "name": "Agricola",
           "bggId": 31260,
-          "imageUrl": "https://www.eltallerdelmodelista.com/68203-thickbox_default/agricola.jpg",
+          "imageUrl": "https://thistletavern.com/cdn/shop/files/MFG3515_1.jpg?v=1706811742&width=940",
           "note": "Worker placement: byg gård, skaf mad og udvikl din familie."
         },
         {
