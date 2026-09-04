@@ -30,8 +30,11 @@
           "name": "El Grande",
           "bggId": 93,
           "imageKind": "board",
-          "imageUrl": "https://spellenbunker.nl/app/uploads/WhatsApp-Image-2024-08-26-at-10.35.04-1024x1024.jpeg",
-          "note": "Områdekontrol i Spanien, hvor flertal og timing er afgørende."
+          "imageUrl": "https://www.spookshow.net/games/files/elgrande.JPG",
+          "imageFallbackUrls": [
+            "https://s3-ap-northeast-1.amazonaws.com/data-hoobby-net/images/post_image_e7442bc8-5bcd-4e96-8b7b-68ad3b4e870d.jpeg"
+          ],
+          "note": "Områdekontrol på det klassiske Spanien-bræt, hvor flertal og timing er afgørende."
         },
         {
           "id": "inis",
@@ -70,8 +73,11 @@
           "name": "Nexus Ops",
           "bggId": 15363,
           "imageKind": "board",
-          "imageUrl": "https://www.boardgamequest.com/wp-content/uploads/2024/09/Nexus-Ops-Gameplay-2.jpg",
-          "note": "Sci-fi-krigsspil med missioner, kampe og direkte konflikt."
+          "imageUrl": "https://www.fantasyflightgames.com/media/ffg_content/nexus-ops/preview2/nexus-ops-map.png",
+          "imageFallbackUrls": [
+            "https://images-cdn.fantasyflightgames.com/ffg_content/nexus-ops/preview2/nexus-ops-map.png"
+          ],
+          "note": "2nd Edition: modulært sci-fi-bræt med missioner, kampe og direkte konflikt."
         },
         {
           "id": "moon-colony-bloodbath",
@@ -102,7 +108,10 @@
           "name": "Architects of the West Kingdom",
           "bggId": 236457,
           "imageKind": "board",
-          "imageUrl": "https://cdn.zatu.com/wp-content/uploads/2022/05/17033327/ARCHITECTS-OF-THE-WEST-KINGDOM-board.png",
+          "imageUrl": "https://morat.co.uk/cdn/shop/files/architectsofthewestkingdomcomponents.jpg?v=1705574977&width=1445",
+          "imageFallbackUrls": [
+            "https://b1803394.smushcdn.com/1803394/wp-content/uploads/2021/08/Architects-Play-Area-1024x768.jpeg?lossy=1&strip=1&webp=1"
+          ],
           "note": "Arbejderplacering, hvor dine arbejdere kan samles på felter og fanges af andre."
         }
       ]
