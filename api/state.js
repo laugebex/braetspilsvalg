@@ -9,15 +9,17 @@ module.exports = async function handler(req, res) {
 
     const viewer = canonicalVoter(poll, req.query.viewer);
     const election = await loadElection(poll);
-    const viewerMainVote = viewer
-      ? election.mainVotes.find((v) => voterKey(v.name) === voterKey(viewer)) || null
-      : null;
 
-    let viewerTiebreakVote = null;
+    const viewerHasMainVote = Boolean(
+      viewer && election.mainVotes.some((v) => voterKey(v.name) === voterKey(viewer))
+    );
+
+    let viewerHasTiebreakVote = false;
     if (election.phase === 'tiebreak' && viewer) {
       const activeRound = election.rounds[election.rounds.length - 1];
-      const voterGame = activeRound.games.find((g) => g.voters.some((n) => voterKey(n) === voterKey(viewer)));
-      if (voterGame) viewerTiebreakVote = voterGame.id;
+      viewerHasTiebreakVote = Boolean(
+        activeRound && activeRound.voters.some((name) => voterKey(name) === voterKey(viewer))
+      );
     }
 
     return json(res, 200, {
@@ -39,8 +41,8 @@ module.exports = async function handler(req, res) {
       candidates: election.phase === 'tiebreak'
         ? poll.games.filter((g) => election.candidates.includes(g.id))
         : [],
-      viewerMainVote,
-      viewerTiebreakVote,
+      viewerHasMainVote,
+      viewerHasTiebreakVote,
       tiebreakRounds: election.complete ? election.rounds : election.rounds.slice(0, -1)
     });
   } catch (error) {
