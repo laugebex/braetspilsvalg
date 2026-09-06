@@ -1,4 +1,4 @@
-const { json, getPoll, canonicalVoter, voterKey } = require('../lib/shared');
+const { json, getPoll, canonicalVoter, voterKey, isSupersededMainVote } = require('../lib/shared');
 const { command, votesKey } = require('../lib/redis');
 const { loadElection } = require('../lib/election');
 
@@ -21,16 +21,25 @@ module.exports = async function handler(req, res) {
       ? [...new Set(body.selections.filter((id) => allowed.has(id)))]
       : [];
 
+    const key = voterKey(name);
     const vote = { name, selections, createdAt: new Date().toISOString() };
     const inserted = await command([
       'HSETNX',
       votesKey(poll.id),
-      voterKey(name),
+      key,
       JSON.stringify(vote)
     ]);
 
     if (Number(inserted) !== 1) {
-      return json(res, 409, { error: 'Du har allerede stemt. Din stemme kan ikke ændres.' });
+      const rawExisting = await command(['HGET', votesKey(poll.id), key]);
+      let existing = null;
+      try { existing = typeof rawExisting === 'string' ? JSON.parse(rawExisting) : rawExisting; } catch (_) {}
+
+      if (!existing || !isSupersededMainVote(poll, existing)) {
+        return json(res, 409, { error: 'Du har allerede stemt. Din stemme kan ikke ændres.' });
+      }
+
+      await command(['HSET', votesKey(poll.id), key, JSON.stringify(vote)]);
     }
 
     const updated = await loadElection(poll);
