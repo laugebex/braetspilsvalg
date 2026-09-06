@@ -1,0 +1,771 @@
+<!doctype html>
+<html lang="da">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f5f7fb" />
+  <title>Lommepengebanken</title>
+  <style>
+:root {
+  --bg: #f5f7fb;
+  --card: #ffffff;
+  --ink: #19202a;
+  --muted: #6c7480;
+  --line: #e3e7ee;
+  --accent: #3457d5;
+  --accent-soft: #eaf0ff;
+  --positive: #178754;
+  --positive-soft: #eaf8f0;
+  --negative: #c53c3c;
+  --negative-soft: #fff0f0;
+  --gold: #946800;
+  --gold-soft: #fff6d6;
+  --shadow: 0 8px 28px rgba(23, 31, 52, .08);
+  font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); }
+button, input, select { font: inherit; }
+button { cursor: pointer; }
+
+.app-shell { width: min(760px, 100%); margin: 0 auto; min-height: 100vh; padding: 22px 16px 56px; }
+.topbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 18px; }
+h1 { font-size: clamp(1.65rem, 5vw, 2.2rem); margin: 3px 0 0; letter-spacing: -.04em; }
+h2 { margin: 3px 0 0; font-size: 1.35rem; }
+h3 { margin: 0 0 12px; font-size: 1rem; }
+.eyebrow { font-size: .68rem; letter-spacing: .14em; font-weight: 800; color: var(--muted); }
+.icon-btn { width: 42px; height: 42px; border: 1px solid var(--line); border-radius: 14px; background: var(--card); color: var(--ink); font-size: 1.2rem; box-shadow: 0 2px 10px rgba(23,31,52,.04); }
+
+.main-nav { display: flex; gap: 8px; overflow-x: auto; padding: 3px 0 14px; }
+.nav-tab { border: 1px solid var(--line); background: var(--card); color: var(--muted); border-radius: 999px; padding: 9px 15px; font-weight: 750; white-space: nowrap; }
+.nav-tab.active { color: var(--accent); background: var(--accent-soft); border-color: #c8d4ff; }
+.home-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.home-child { text-align: left; width: 100%; border: 1px solid var(--line); background: var(--card); border-radius: 22px; padding: 18px; box-shadow: var(--shadow); color: var(--ink); }
+.home-child:hover { border-color: #c8d4ff; }
+.home-name { font-size: 1.3rem; font-weight: 850; letter-spacing: -.03em; }
+.home-balance-label { color: var(--muted); font-size: .78rem; font-weight: 750; margin-top: 16px; }
+.home-balance { font-size: 2rem; font-weight: 850; letter-spacing: -.05em; margin-top: 2px; }
+.home-meta { color: var(--muted); font-size: .8rem; line-height: 1.45; margin-top: 6px; }
+.goal-mini { margin-top: 14px; padding-top: 13px; border-top: 1px solid var(--line); }
+.goal-mini-name { font-size: .78rem; font-weight: 800; display: flex; justify-content: space-between; gap: 8px; }
+.rules-card { line-height: 1.55; }
+.rules-placeholder { border: 1px dashed #cbd2dc; background: #fafbfc; border-radius: 16px; padding: 20px; color: var(--muted); text-align: center; }
+.rules-placeholder strong { display:block; color: var(--ink); font-size: 1rem; margin-bottom: 4px; }
+
+.content { display: grid; gap: 14px; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 22px; padding: 18px; box-shadow: var(--shadow); }
+.balance-card { padding: 22px; overflow: hidden; position: relative; }
+.balance-card::after { content: ""; position: absolute; right: -32px; top: -36px; width: 130px; height: 130px; background: var(--accent-soft); border-radius: 50%; }
+.balance-label { color: var(--muted); font-weight: 700; font-size: .87rem; }
+.balance { font-size: clamp(2.45rem, 10vw, 4rem); font-weight: 850; letter-spacing: -.06em; margin-top: 4px; position: relative; z-index: 1; }
+.next-pay { color: var(--muted); font-size: .86rem; margin-top: 4px; }
+.action-row { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-top: 18px; position: relative; z-index: 1; }
+.action-btn { border: 0; border-radius: 15px; padding: 12px; font-weight: 800; }
+.action-btn.income { background: var(--positive-soft); color: var(--positive); }
+.action-btn.expense { background: var(--negative-soft); color: var(--negative); }
+
+.section-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.section-head h2 { font-size: 1.02rem; margin: 0; }
+.text-btn { border: 0; background: transparent; color: var(--accent); font-weight: 800; padding: 3px 0; }
+
+.goal-list { display: grid; gap: 10px; }
+.goal { border: 1px solid var(--line); border-radius: 16px; padding: 13px; }
+.goal-top { display: flex; justify-content: space-between; gap: 12px; align-items: start; }
+.goal-name { font-weight: 800; }
+.goal-money { color: var(--muted); font-size: .82rem; margin-top: 2px; }
+.progress { height: 9px; background: #eef1f5; border-radius: 999px; overflow: hidden; margin-top: 10px; }
+.progress > div { height: 100%; background: var(--accent); border-radius: inherit; }
+.goal-actions { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+.mini-btn { border: 1px solid var(--line); background: #fff; border-radius: 10px; padding: 7px 9px; font-size: .78rem; font-weight: 800; }
+.mini-btn.danger { color: var(--negative); }
+
+.badges { display: flex; gap: 9px; overflow-x: auto; padding-bottom: 2px; }
+.badge { flex: 0 0 auto; min-width: 118px; border-radius: 16px; padding: 12px; background: var(--gold-soft); color: var(--gold); }
+.badge.locked { background: #f2f3f5; color: #969da7; filter: grayscale(1); }
+.badge-icon { font-size: 1.45rem; }
+.badge-name { font-size: .82rem; font-weight: 850; margin-top: 4px; }
+.badge-desc { font-size: .7rem; opacity: .85; margin-top: 2px; }
+
+.transactions { display: grid; }
+.transaction { display: grid; grid-template-columns: 42px 1fr auto; gap: 10px; align-items: center; padding: 11px 0; border-bottom: 1px solid var(--line); }
+.transaction:last-child { border-bottom: 0; }
+.tx-icon { width: 38px; height: 38px; border-radius: 12px; display: grid; place-items: center; font-weight: 900; }
+.tx-icon.income { background: var(--positive-soft); color: var(--positive); }
+.tx-icon.expense { background: var(--negative-soft); color: var(--negative); }
+.tx-main { min-width: 0; }
+.tx-note { font-weight: 760; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tx-date { color: var(--muted); font-size: .76rem; margin-top: 2px; }
+.tx-amount { font-weight: 850; text-align: right; }
+.tx-amount.income { color: var(--positive); }
+.tx-amount.expense { color: var(--negative); }
+.empty { color: var(--muted); text-align: center; padding: 16px 0 6px; font-size: .9rem; }
+
+.modal { border: 0; padding: 0; border-radius: 22px; width: min(520px, calc(100% - 24px)); max-height: calc(100vh - 24px); background: transparent; }
+.modal::backdrop { background: rgba(15, 22, 36, .48); backdrop-filter: blur(2px); }
+.modal-card { background: var(--card); padding: 20px; border-radius: 22px; display: grid; gap: 15px; max-height: calc(100vh - 24px); overflow-y: auto; }
+.modal-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+label { display: grid; gap: 6px; font-size: .82rem; font-weight: 800; color: #434a54; }
+input, select { width: 100%; border: 1px solid var(--line); background: #fff; color: var(--ink); border-radius: 12px; padding: 11px 12px; outline: none; }
+input:focus, select:focus { border-color: #9aadef; box-shadow: 0 0 0 3px var(--accent-soft); }
+.money-input { display: grid; grid-template-columns: 1fr auto; align-items: center; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: #fff; }
+.money-input input { border: 0; border-radius: 0; box-shadow: none; }
+.money-input span { color: var(--muted); padding-right: 12px; font-weight: 700; }
+.primary-btn, .secondary-btn { border-radius: 13px; padding: 11px 14px; font-weight: 850; }
+.primary-btn { background: var(--accent); color: white; border: 1px solid var(--accent); }
+.secondary-btn { background: #fff; color: var(--ink); border: 1px solid var(--line); }
+.full { width: 100%; }
+.settings-section { border-top: 1px solid var(--line); padding-top: 14px; }
+.settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.button-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.file-btn { position: relative; display: inline-block; cursor: pointer; }
+.file-btn input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+.help { color: var(--muted); font-size: .76rem; line-height: 1.45; margin: 9px 0 0; }
+.hidden { display: none !important; }
+.toast { position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 12px); background: #1d2530; color: white; padding: 10px 14px; border-radius: 999px; font-size: .82rem; font-weight: 750; opacity: 0; pointer-events: none; transition: .2s ease; z-index: 100; }
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+@media (max-width: 520px) {
+  .app-shell { padding: 16px 12px 40px; }
+  .card { border-radius: 19px; padding: 15px; }
+  .balance-card { padding: 18px; }
+  .settings-grid { grid-template-columns: 1fr; }
+  .home-grid { grid-template-columns: 1fr; }
+}
+
+</style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <div class="eyebrow">FAMILIENS LOMMEPENGE</div>
+        <h1>Lommepengebanken</h1>
+      </div>
+      <button id="settingsBtn" class="icon-btn" aria-label="Indstillinger">⚙</button>
+    </header>
+
+    <nav id="mainNav" class="main-nav" aria-label="Navigation"></nav>
+
+    <main id="app" class="content" aria-live="polite"></main>
+  </div>
+
+  <dialog id="transactionDialog" class="modal">
+    <form method="dialog" id="transactionForm" class="modal-card">
+      <div class="modal-head">
+        <div>
+          <div class="eyebrow">NY POSTERING</div>
+          <h2 id="transactionTitle">Tilføj</h2>
+        </div>
+        <button type="button" class="icon-btn close-dialog" aria-label="Luk">×</button>
+      </div>
+
+      <input type="hidden" id="transactionType" value="income" />
+      <label>Beløb
+        <div class="money-input"><input id="transactionAmount" inputmode="decimal" type="number" min="0.01" step="0.01" required /><span>kr.</span></div>
+      </label>
+      <label>Hvad var det?
+        <input id="transactionNote" type="text" maxlength="80" placeholder="Fx bilvask eller Pokémon-kort" required />
+      </label>
+      <label>Dato
+        <input id="transactionDate" type="date" required />
+      </label>
+      <button class="primary-btn full" value="default">Gem postering</button>
+    </form>
+  </dialog>
+
+  <dialog id="goalDialog" class="modal">
+    <form method="dialog" id="goalForm" class="modal-card">
+      <div class="modal-head">
+        <div>
+          <div class="eyebrow">OPSPARINGSMÅL</div>
+          <h2>Nyt mål</h2>
+        </div>
+        <button type="button" class="icon-btn close-dialog" aria-label="Luk">×</button>
+      </div>
+      <label>Hvad spares der op til?
+        <input id="goalName" maxlength="50" placeholder="Fx LEGO-sæt" required />
+      </label>
+      <label>Målbeløb
+        <div class="money-input"><input id="goalTarget" type="number" min="1" step="1" required /><span>kr.</span></div>
+      </label>
+      <label>Beløb allerede sat til side
+        <div class="money-input"><input id="goalSaved" type="number" min="0" step="1" value="0" required /><span>kr.</span></div>
+      </label>
+      <button class="primary-btn full" value="default">Opret mål</button>
+    </form>
+  </dialog>
+
+  <dialog id="settingsDialog" class="modal">
+    <form method="dialog" id="settingsForm" class="modal-card settings-card">
+      <div class="modal-head">
+        <div>
+          <div class="eyebrow">INDSTILLINGER</div>
+          <h2 id="settingsTitle">Barn</h2>
+        </div>
+        <button type="button" class="icon-btn close-dialog" aria-label="Luk">×</button>
+      </div>
+
+      <label>Navn
+        <input id="childName" maxlength="25" required />
+      </label>
+
+      <div class="settings-section">
+        <h3>Fast lommepenge</h3>
+        <div class="settings-grid">
+          <label>Beløb
+            <div class="money-input"><input id="allowanceAmount" type="number" min="0" step="1" required /><span>kr.</span></div>
+          </label>
+          <label>Hyppighed
+            <select id="allowanceFrequency">
+              <option value="weekly">Hver uge</option>
+              <option value="monthly">Hver måned</option>
+              <option value="off">Slået fra</option>
+            </select>
+          </label>
+          <label id="weekdayLabel">Ugedag
+            <select id="allowanceWeekday">
+              <option value="1">Mandag</option>
+              <option value="2">Tirsdag</option>
+              <option value="3">Onsdag</option>
+              <option value="4">Torsdag</option>
+              <option value="5">Fredag</option>
+              <option value="6">Lørdag</option>
+              <option value="0">Søndag</option>
+            </select>
+          </label>
+          <label id="monthdayLabel" class="hidden">Dag i måneden
+            <input id="allowanceMonthday" type="number" min="1" max="28" value="1" />
+          </label>
+        </div>
+        <p class="help">Faste lommepenge bliver registreret automatisk, når siden åbnes efter en planlagt udbetalingsdag.</p>
+      </div>
+
+      <div class="settings-section">
+        <h3>Backup</h3>
+        <div class="button-row">
+          <button type="button" id="exportBtn" class="secondary-btn">Eksportér backup</button>
+          <label class="secondary-btn file-btn">Importér backup<input type="file" id="importInput" accept="application/json" /></label>
+        </div>
+        <p class="help">Data ligger kun i denne browser. Gem indimellem en backup, hvis du vil være sikker på ikke at miste historikken.</p>
+      </div>
+
+      <button class="primary-btn full" value="default">Gem indstillinger</button>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast" role="status"></div>
+
+  <script>
+(() => {
+  const STORAGE_KEY = 'lommepengebanken.v1';
+  const todayISO = () => {
+    const d = new Date();
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${day}`;
+  };
+
+  const initialData = () => ({
+    version: 2,
+    activeView: 'home',
+    activeChildId: 'child-1',
+    children: [
+      makeChild('child-1', 'Vincent'),
+      makeChild('child-2', 'Arthur')
+    ]
+  });
+
+  function makeChild(id, name) {
+    const now = todayISO();
+    return {
+      id,
+      name,
+      createdAt: now,
+      allowance: {
+        amount: 40,
+        frequency: 'weekly',
+        weekday: 5,
+        monthday: 1,
+        startDate: now,
+        lastProcessed: null
+      },
+      transactions: [],
+      goals: []
+    };
+  }
+
+  let state = loadState();
+
+  const els = {
+    app: document.getElementById('app'),
+    nav: document.getElementById('mainNav'),
+    settingsBtn: document.getElementById('settingsBtn'),
+    transactionDialog: document.getElementById('transactionDialog'),
+    transactionForm: document.getElementById('transactionForm'),
+    transactionType: document.getElementById('transactionType'),
+    transactionTitle: document.getElementById('transactionTitle'),
+    transactionAmount: document.getElementById('transactionAmount'),
+    transactionNote: document.getElementById('transactionNote'),
+    transactionDate: document.getElementById('transactionDate'),
+    goalDialog: document.getElementById('goalDialog'),
+    goalForm: document.getElementById('goalForm'),
+    goalName: document.getElementById('goalName'),
+    goalTarget: document.getElementById('goalTarget'),
+    goalSaved: document.getElementById('goalSaved'),
+    settingsDialog: document.getElementById('settingsDialog'),
+    settingsForm: document.getElementById('settingsForm'),
+    settingsTitle: document.getElementById('settingsTitle'),
+    childName: document.getElementById('childName'),
+    allowanceAmount: document.getElementById('allowanceAmount'),
+    allowanceFrequency: document.getElementById('allowanceFrequency'),
+    allowanceWeekday: document.getElementById('allowanceWeekday'),
+    allowanceMonthday: document.getElementById('allowanceMonthday'),
+    weekdayLabel: document.getElementById('weekdayLabel'),
+    monthdayLabel: document.getElementById('monthdayLabel'),
+    exportBtn: document.getElementById('exportBtn'),
+    importInput: document.getElementById('importInput'),
+    toast: document.getElementById('toast')
+  };
+
+  function loadState() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return initialData();
+      const parsed = JSON.parse(raw);
+      if (!parsed?.children?.length) return initialData();
+      parsed.version = 2;
+      parsed.activeView = parsed.activeView || 'home';
+      const vincent = parsed.children.find(c => c.id === 'child-1');
+      const arthur = parsed.children.find(c => c.id === 'child-2');
+      if (vincent && (!vincent.name || vincent.name === 'Barn 1')) vincent.name = 'Vincent';
+      if (arthur && (!arthur.name || arthur.name === 'Barn 2')) arthur.name = 'Arthur';
+      return parsed;
+    } catch {
+      return initialData();
+    }
+  }
+
+  function saveState() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }
+
+  function activeChild() {
+    return state.children.find(c => c.id === state.activeChildId) || state.children[0];
+  }
+
+  function parseLocalDate(iso) {
+    const [y, m, d] = iso.split('-').map(Number);
+    return new Date(y, m - 1, d, 12, 0, 0, 0);
+  }
+
+  function dateISO(date) {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const d = String(date.getDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
+  }
+
+  function formatDate(iso) {
+    return new Intl.DateTimeFormat('da-DK', { day: 'numeric', month: 'short', year: 'numeric' }).format(parseLocalDate(iso));
+  }
+
+  function money(value) {
+    return new Intl.NumberFormat('da-DK', { maximumFractionDigits: 2 }).format(value) + ' kr.';
+  }
+
+  function uid(prefix) {
+    return prefix + '-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 7);
+  }
+
+  function transactionBalance(child) {
+    return child.transactions.reduce((sum, tx) => sum + (tx.type === 'income' ? Number(tx.amount) : -Number(tx.amount)), 0);
+  }
+
+  function currentGoalSaved(child) {
+    return child.goals.reduce((sum, g) => sum + Number(g.saved || 0), 0);
+  }
+
+  function availableBalance(child) {
+    return transactionBalance(child) - currentGoalSaved(child);
+  }
+
+  function processAllRecurring() {
+    let changed = false;
+    state.children.forEach(c => { if (processRecurring(c)) changed = true; });
+    if (changed) saveState();
+  }
+
+  function processRecurring(child) {
+    const a = child.allowance;
+    if (!a || a.frequency === 'off' || Number(a.amount) <= 0) return false;
+    const today = parseLocalDate(todayISO());
+    let from = parseLocalDate(a.lastProcessed || a.startDate || todayISO());
+    from.setDate(from.getDate() + (a.lastProcessed ? 1 : 0));
+    let added = false;
+    for (let d = new Date(from); d <= today; d.setDate(d.getDate() + 1)) {
+      const matches = (a.frequency === 'weekly' && d.getDay() === Number(a.weekday)) ||
+        (a.frequency === 'monthly' && d.getDate() === Number(a.monthday));
+      if (matches) {
+        const iso = dateISO(d);
+        const recurringId = `${child.id}-${a.frequency}-${iso}`;
+        if (!child.transactions.some(t => t.recurringId === recurringId)) {
+          child.transactions.push({ id: uid('tx'), type: 'income', amount: Number(a.amount), note: 'Lommepenge', date: iso, recurringId, createdAt: Date.now() });
+          added = true;
+        }
+      }
+    }
+    a.lastProcessed = todayISO();
+    return added;
+  }
+
+  function nextAllowanceText(child) {
+    const a = child.allowance;
+    if (!a || a.frequency === 'off' || Number(a.amount) <= 0) return 'Ingen fast overførsel';
+    const today = parseLocalDate(todayISO());
+    let d = new Date(today);
+    d.setDate(d.getDate() + 1);
+    for (let i = 0; i < 370; i++) {
+      if ((a.frequency === 'weekly' && d.getDay() === Number(a.weekday)) ||
+          (a.frequency === 'monthly' && d.getDate() === Number(a.monthday))) {
+        return `Næste faste overførsel: ${formatDate(dateISO(d))} · ${money(Number(a.amount))}`;
+      }
+      d.setDate(d.getDate() + 1);
+    }
+    return '';
+  }
+
+  function render() {
+    processAllRecurring();
+    renderNav();
+    const view = state.activeView || 'home';
+    els.settingsBtn.classList.toggle('hidden', view !== 'child');
+    if (view === 'home') return renderHome();
+    if (view === 'rules') return renderRules();
+    return renderChild();
+  }
+
+  function renderNav() {
+    const vincent = state.children.find(c => c.id === 'child-1') || state.children[0];
+    const arthur = state.children.find(c => c.id === 'child-2') || state.children[1];
+    const items = [
+      { key: 'home', label: 'Forside' },
+      { key: 'child-1', label: vincent?.name || 'Vincent' },
+      { key: 'child-2', label: arthur?.name || 'Arthur' },
+      { key: 'rules', label: 'Regler' }
+    ];
+    els.nav.innerHTML = items.map(item => {
+      const active = (item.key === 'home' && state.activeView === 'home') ||
+        (item.key === 'rules' && state.activeView === 'rules') ||
+        (state.activeView === 'child' && state.activeChildId === item.key);
+      return `<button class="nav-tab ${active ? 'active' : ''}" data-view="${escapeHtml(item.key)}">${escapeHtml(item.label)}</button>`;
+    }).join('');
+  }
+
+  function renderHome() {
+    els.app.innerHTML = `
+      <section class="card">
+        <div class="eyebrow">OVERBLIK</div>
+        <h2 style="margin-top:5px">Vincent og Arthurs lommepenge</h2>
+        <p class="help" style="font-size:.86rem;margin-top:7px">Tryk på et barn for at se posteringer, opsparing og milepæle.</p>
+      </section>
+      <section class="home-grid">
+        ${state.children.map(homeChildHtml).join('')}
+      </section>
+      <section class="card">
+        <div class="section-head"><h2>Næste lommepenge</h2></div>
+        ${state.children.map(c => `<div class="transaction"><div class="tx-icon income">＋</div><div class="tx-main"><div class="tx-note">${escapeHtml(c.name)}</div><div class="tx-date">${escapeHtml(nextAllowanceText(c) || 'Fast lommepenge er slået fra')}</div></div></div>`).join('')}
+      </section>`;
+  }
+
+  function homeChildHtml(child) {
+    const spendable = availableBalance(child);
+    const reserved = currentGoalSaved(child);
+    const goal = child.goals[0];
+    let goalPart = '<div class="home-meta">Intet opsparingsmål endnu</div>';
+    if (goal) {
+      const pct = Math.min(100, Math.round((Number(goal.saved) / Number(goal.target)) * 100) || 0);
+      goalPart = `<div class="goal-mini"><div class="goal-mini-name"><span>🎯 ${escapeHtml(goal.name)}</span><span>${pct}%</span></div><div class="progress"><div style="width:${pct}%"></div></div></div>`;
+    }
+    return `<button class="home-child" data-open-child="${escapeHtml(child.id)}">
+      <div class="home-name">${escapeHtml(child.name)}</div>
+      <div class="home-balance-label">Til rådighed</div>
+      <div class="home-balance">${money(spendable)}</div>
+      <div class="home-meta">${reserved > 0 ? `${money(reserved)} sat til side · ` : ''}${escapeHtml(nextAllowanceText(child) || 'Ingen fast overførsel')}</div>
+      ${goalPart}
+    </button>`;
+  }
+
+  function renderRules() {
+    els.app.innerHTML = `
+      <section class="card rules-card">
+        <div class="eyebrow">FAMILIENS AFTALE</div>
+        <h2 style="margin-top:5px">Regler for lommepenge</h2>
+        <p class="help" style="font-size:.86rem;margin-top:7px">Her samler vi de regler, Vincent og Arthur skal kunne se og forstå.</p>
+        <div class="rules-placeholder" style="margin-top:18px">
+          <strong>Reglerne kommer snart</strong>
+          Når du sender dem til mig, sætter jeg dem ind her i en kort og børnevenlig form.
+        </div>
+      </section>`;
+  }
+
+  function renderChild() {
+    const child = activeChild();
+    const totalBalance = transactionBalance(child);
+    const reserved = currentGoalSaved(child);
+    const spendable = availableBalance(child);
+    const goals = child.goals;
+    const sortedTx = [...child.transactions].sort((a, b) => b.date.localeCompare(a.date) || (b.createdAt || 0) - (a.createdAt || 0));
+    const badges = getBadges(child);
+
+    els.app.innerHTML = `
+      <section class="card balance-card">
+        <div class="eyebrow">${escapeHtml(child.name).toUpperCase()}</div>
+        <div class="balance-label" style="margin-top:8px">Til rådighed${reserved > 0 ? ` · ${money(reserved)} sat til side` : ''}</div>
+        <div class="balance">${money(spendable)}</div>
+        <div class="next-pay">Samlet saldo ${money(totalBalance)} · ${nextAllowanceText(child)}</div>
+        <div class="action-row">
+          <button class="action-btn income" data-action="income">+ Penge ind</button>
+          <button class="action-btn expense" data-action="expense">− Forbrug</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="section-head">
+          <h2>Opsparingsmål</h2>
+          <button class="text-btn" data-action="add-goal">+ Nyt mål</button>
+        </div>
+        <div class="goal-list">
+          ${goals.length ? goals.map(goalHtml).join('') : '<div class="empty">Ingen mål endnu. Opret fx et LEGO-sæt eller et spil.</div>'}
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="section-head"><h2>Milepæle</h2></div>
+        <div class="badges">${badges.map(badgeHtml).join('')}</div>
+      </section>
+
+      <section class="card">
+        <div class="section-head"><h2>Historik</h2></div>
+        <div class="transactions">
+          ${sortedTx.length ? sortedTx.map(txHtml).join('') : '<div class="empty">Ingen posteringer endnu.</div>'}
+        </div>
+      </section>
+    `;
+  }
+
+  function goalHtml(goal) {
+    const pct = Math.min(100, Math.round((Number(goal.saved) / Number(goal.target)) * 100) || 0);
+    const remaining = Math.max(0, Number(goal.target) - Number(goal.saved));
+    return `
+      <div class="goal" data-goal="${escapeHtml(goal.id)}">
+        <div class="goal-top">
+          <div><div class="goal-name">${escapeHtml(goal.name)}</div><div class="goal-money">${money(Number(goal.saved))} af ${money(Number(goal.target))} · ${remaining ? money(remaining) + ' tilbage' : 'Målet er nået 🎉'}</div></div>
+          <strong>${pct}%</strong>
+        </div>
+        <div class="progress"><div style="width:${pct}%"></div></div>
+        <div class="goal-actions">
+          <button class="mini-btn" data-action="goal-add" data-goal-id="${escapeHtml(goal.id)}">+ Sæt til side</button>
+          <button class="mini-btn" data-action="goal-release" data-goal-id="${escapeHtml(goal.id)}">Frigiv</button>
+          <button class="mini-btn danger" data-action="goal-delete" data-goal-id="${escapeHtml(goal.id)}">Slet</button>
+        </div>
+      </div>`;
+  }
+
+  function txHtml(tx) {
+    const sign = tx.type === 'income' ? '+' : '−';
+    const icon = tx.type === 'income' ? '＋' : '−';
+    return `<div class="transaction">
+      <div class="tx-icon ${tx.type}">${icon}</div>
+      <div class="tx-main"><div class="tx-note">${escapeHtml(tx.note)}</div><div class="tx-date">${formatDate(tx.date)}</div></div>
+      <div class="tx-amount ${tx.type}">${sign}${money(Number(tx.amount))}</div>
+    </div>`;
+  }
+
+  function getBadges(child) {
+    const tx = child.transactions;
+    const expenses = tx.filter(t => t.type === 'expense');
+    const goalsReached = child.goals.filter(g => Number(g.saved) >= Number(g.target)).length;
+    const totalSaved = currentGoalSaved(child);
+    const balance = transactionBalance(child);
+    const recurring = tx.filter(t => t.recurringId).length;
+    return [
+      { icon: '🌱', name: 'Første skridt', desc: 'Første postering', unlocked: tx.length >= 1 },
+      { icon: '🎯', name: 'Målrettet', desc: 'Opret et opsparingsmål', unlocked: child.goals.length >= 1 },
+      { icon: '💰', name: '100-klubben', desc: '100 kr. sat til side', unlocked: totalSaved >= 100 },
+      { icon: '🏆', name: 'Målet nået', desc: 'Gennemfør et sparemål', unlocked: goalsReached >= 1 },
+      { icon: '🧠', name: 'Prioritering', desc: '5 registrerede køb', unlocked: expenses.length >= 5 },
+      { icon: '📅', name: 'Stabil opsparer', desc: '4 faste udbetalinger', unlocked: recurring >= 4 && balance >= 0 }
+    ];
+  }
+
+  function badgeHtml(b) {
+    return `<div class="badge ${b.unlocked ? '' : 'locked'}"><div class="badge-icon">${b.icon}</div><div class="badge-name">${escapeHtml(b.name)}</div><div class="badge-desc">${escapeHtml(b.desc)}</div></div>`;
+  }
+
+  function openTransaction(type) {
+    els.transactionType.value = type;
+    els.transactionTitle.textContent = type === 'income' ? 'Penge ind' : 'Forbrug';
+    els.transactionAmount.value = '';
+    els.transactionNote.value = '';
+    els.transactionDate.value = todayISO();
+    els.transactionDialog.showModal();
+    setTimeout(() => els.transactionAmount.focus(), 30);
+  }
+
+  function openSettings() {
+    const child = activeChild();
+    els.settingsTitle.textContent = child.name;
+    els.childName.value = child.name;
+    els.allowanceAmount.value = child.allowance.amount;
+    els.allowanceFrequency.value = child.allowance.frequency;
+    els.allowanceWeekday.value = String(child.allowance.weekday ?? 5);
+    els.allowanceMonthday.value = child.allowance.monthday ?? 1;
+    updateFrequencyFields();
+    els.settingsDialog.showModal();
+  }
+
+  function updateFrequencyFields() {
+    const f = els.allowanceFrequency.value;
+    els.weekdayLabel.classList.toggle('hidden', f !== 'weekly');
+    els.monthdayLabel.classList.toggle('hidden', f !== 'monthly');
+  }
+
+  function adjustGoal(goalId, mode) {
+    const child = activeChild();
+    const goal = child.goals.find(g => g.id === goalId);
+    if (!goal) return;
+    if (mode === 'delete') {
+      if (confirm(`Slet opsparingsmålet “${goal.name}”? Pengene bliver på den almindelige saldo.`)) {
+        child.goals = child.goals.filter(g => g.id !== goalId);
+        saveState(); render(); toast('Mål slettet');
+      }
+      return;
+    }
+    const max = mode === 'add' ? Math.max(0, availableBalance(child)) : Number(goal.saved);
+    const raw = prompt(mode === 'add' ? `Hvor meget vil du sætte til side? (maks. ${money(max)})` : `Hvor meget vil du frigive? (maks. ${money(max)})`);
+    if (raw === null) return;
+    const amount = Number(String(raw).replace(',', '.'));
+    if (!Number.isFinite(amount) || amount <= 0 || amount > max) return toast('Beløbet er ikke gyldigt');
+    goal.saved = Number(goal.saved) + (mode === 'add' ? amount : -amount);
+    saveState(); render();
+    toast(mode === 'add' ? 'Beløb sat til side' : 'Beløb frigivet');
+  }
+
+  els.nav.addEventListener('click', e => {
+    const btn = e.target.closest('[data-view]');
+    if (!btn) return;
+    const view = btn.dataset.view;
+    if (view === 'home' || view === 'rules') {
+      state.activeView = view;
+    } else {
+      state.activeView = 'child';
+      state.activeChildId = view;
+    }
+    saveState(); render();
+  });
+
+  els.app.addEventListener('click', e => {
+    const childCard = e.target.closest('[data-open-child]');
+    if (childCard) {
+      state.activeChildId = childCard.dataset.openChild;
+      state.activeView = 'child';
+      saveState(); render();
+      return;
+    }
+    const btn = e.target.closest('[data-action]');
+    if (!btn) return;
+    const action = btn.dataset.action;
+    if (action === 'income' || action === 'expense') openTransaction(action);
+    if (action === 'add-goal') {
+      els.goalForm.reset(); els.goalSaved.value = 0; els.goalDialog.showModal();
+    }
+    if (action === 'goal-add') adjustGoal(btn.dataset.goalId, 'add');
+    if (action === 'goal-release') adjustGoal(btn.dataset.goalId, 'release');
+    if (action === 'goal-delete') adjustGoal(btn.dataset.goalId, 'delete');
+  });
+
+  els.transactionForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const amount = Number(els.transactionAmount.value);
+    if (!Number.isFinite(amount) || amount <= 0) return;
+    const child = activeChild();
+    child.transactions.push({
+      id: uid('tx'), type: els.transactionType.value, amount,
+      note: els.transactionNote.value.trim(), date: els.transactionDate.value,
+      createdAt: Date.now()
+    });
+    saveState(); els.transactionDialog.close(); render(); toast('Postering gemt');
+  });
+
+  els.goalForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const target = Number(els.goalTarget.value); const saved = Number(els.goalSaved.value || 0);
+    const child = activeChild();
+    if (saved > availableBalance(child)) return toast('Der er ikke så meget til rådighed');
+    child.goals.push({ id: uid('goal'), name: els.goalName.value.trim(), target, saved });
+    saveState(); els.goalDialog.close(); render(); toast('Opsparingsmål oprettet');
+  });
+
+  els.settingsBtn.addEventListener('click', openSettings);
+  els.allowanceFrequency.addEventListener('change', updateFrequencyFields);
+
+  els.settingsForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const child = activeChild();
+    const old = JSON.stringify(child.allowance);
+    child.name = els.childName.value.trim() || child.name;
+    child.allowance.amount = Number(els.allowanceAmount.value || 0);
+    child.allowance.frequency = els.allowanceFrequency.value;
+    child.allowance.weekday = Number(els.allowanceWeekday.value);
+    child.allowance.monthday = Number(els.allowanceMonthday.value || 1);
+    const scheduleCoreBefore = JSON.stringify(JSON.parse(old), ['amount','frequency','weekday','monthday']);
+    const scheduleCoreAfter = JSON.stringify(child.allowance, ['amount','frequency','weekday','monthday']);
+    if (scheduleCoreBefore !== scheduleCoreAfter) {
+      child.allowance.startDate = todayISO();
+      child.allowance.lastProcessed = null;
+    }
+    saveState(); els.settingsDialog.close(); render(); toast('Indstillinger gemt');
+  });
+
+  els.exportBtn.addEventListener('click', () => {
+    const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = `lommepengebanken-backup-${todayISO()}.json`; a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  });
+
+  els.importInput.addEventListener('change', async e => {
+    const file = e.target.files?.[0]; if (!file) return;
+    try {
+      const parsed = JSON.parse(await file.text());
+      if (!parsed?.children?.length) throw new Error('invalid');
+      state = parsed; saveState(); els.settingsDialog.close(); render(); toast('Backup importeret');
+    } catch { toast('Backupfilen kunne ikke læses'); }
+    e.target.value = '';
+  });
+
+  document.querySelectorAll('.close-dialog').forEach(btn => btn.addEventListener('click', () => btn.closest('dialog').close()));
+  document.querySelectorAll('dialog').forEach(d => d.addEventListener('click', e => { if (e.target === d) d.close(); }));
+
+  function toast(message) {
+    els.toast.textContent = message;
+    els.toast.classList.add('show');
+    clearTimeout(toast.timer);
+    toast.timer = setTimeout(() => els.toast.classList.remove('show'), 1800);
+  }
+
+  function escapeHtml(value) {
+    return String(value ?? '').replace(/[&<>'"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[c]));
+  }
+
+  if (!state.activeView) state.activeView = 'home';
+  saveState();
+  render();
+})();
+
+</script>
+</body>
+</html>
