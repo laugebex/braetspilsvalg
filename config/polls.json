@@ -13,14 +13,6 @@
       },
       "games": [
         {
-          "id": "quartermaster-general-1914",
-          "name": "Quartermaster General: 1914",
-          "bggId": 208773,
-          "imageKind": "board",
-          "imageUrl": "https://cdn.anyfinder.eu/assets/CW6odOOsAGVz0EPDN3a4h2JTkBxshKuQaI9C5KkxnQubxjCimx7b2oFNzaCQEpsO?height=768",
-          "note": "Kortdrevet spil om 1. verdenskrig for fem stormagter fordelt på to hold."
-        },
-        {
           "id": "hansa-teutonica",
           "name": "Hansa Teutonica",
           "bggId": 43015,
