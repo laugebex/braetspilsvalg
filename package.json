@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "node scripts/trigger-carsten-warcraft.js",
+    "postinstall": "node scripts/trigger-carsten-warcraft.js",
     "test": "node tests.js"
   },
   "engines": {
