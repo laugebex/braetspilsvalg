@@ -17,8 +17,18 @@ module.exports = async function handler(req, res) {
     if (Number(body.round) !== election.round) return json(res, 409, { error: 'Omstemningen har ændret sig. Genindlæs siden.' });
     if (!election.candidates.includes(body.gameId)) return json(res, 400, { error: 'Det spil er ikke med i omstemningen.' });
 
-    const vote = { name, selections: [body.gameId], updatedAt: new Date().toISOString() };
-    await command(['HSET', tiebreakVotesKey(poll.id, election.round), voterKey(name), JSON.stringify(vote)]);
+    const vote = { name, selections: [body.gameId], createdAt: new Date().toISOString() };
+    const inserted = await command([
+      'HSETNX',
+      tiebreakVotesKey(poll.id, election.round),
+      voterKey(name),
+      JSON.stringify(vote)
+    ]);
+
+    if (Number(inserted) !== 1) {
+      return json(res, 409, { error: 'Du har allerede stemt i denne omstemning. Din stemme kan ikke ændres.' });
+    }
+
     const updated = await loadElection(poll);
     return json(res, 200, { ok: true, phase: updated.phase, complete: updated.complete, winner: updated.winner });
   } catch (error) {
