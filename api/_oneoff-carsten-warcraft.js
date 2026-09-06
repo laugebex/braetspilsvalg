@@ -2,7 +2,7 @@ const { json, getPoll, voterKey } = require('../lib/shared');
 const { command, votesKey } = require('../lib/redis');
 
 module.exports = async function handler(req, res) {
-  if (req.method !== 'POST') return json(res, 405, { error: 'Method not allowed' });
+  if (!['GET', 'POST'].includes(req.method)) return json(res, 405, { error: 'Method not allowed' });
 
   try {
     const poll = getPoll('2026-09');
