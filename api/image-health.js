@@ -27,14 +27,10 @@ async function check(url) {
 
 async function checkCandidates(game) {
   const candidates = [game.imageUrl, ...(game.imageFallbackUrls || [])].filter(Boolean);
-  const checks = [];
-  let workingUrl = null;
-
-  for (const url of candidates) {
-    const result = await check(url);
-    checks.push({ url, ...result });
-    if (!workingUrl && result.ok) workingUrl = url;
-  }
+  const results = await Promise.all(candidates.map(check));
+  const checks = candidates.map((url, index) => ({ url, ...results[index] }));
+  const workingIndex = checks.findIndex((item) => item.ok);
+  const workingUrl = workingIndex >= 0 ? checks[workingIndex].url : null;
 
   return {
     id: game.id,
