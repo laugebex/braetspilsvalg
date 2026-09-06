@@ -77,36 +77,65 @@ function renderProgress(data) {
   }</div>`;
 }
 
+function voteReceipt(title = 'Stemmen er afgivet', text = 'Din stemme er gemt og kan ikke ændres.') {
+  return `
+    <div class="card success-card vote-receipt">
+      <div class="receipt-check" aria-hidden="true">✓</div>
+      <div class="winner">${esc(title)}</div>
+      <p class="help">${esc(text)}</p>
+    </div>`;
+}
+
+function selectedMarker() {
+  return '<span class="selection-check" aria-hidden="true">✓</span>';
+}
+
+function updateSaveVoteLabel() {
+  const button = $('#save-vote');
+  if (!button) return;
+  const count = state.selections.size;
+  button.textContent = `Gem ${count} ${count === 1 ? 'stemme' : 'stemmer'}`;
+}
+
 function renderMainVote(data) {
-  state.selections = new Set(data.viewerMainVote?.selections || []);
+  state.selections = new Set();
+
+  if (data.viewerHasMainVote) {
+    $('#vote-content').innerHTML = voteReceipt();
+    return;
+  }
+
   const games = state.poll.games.map(game => `
-    <label class="game ${state.selections.has(game.id) ? 'selected' : ''}">
+    <label class="game">
       <div class="cover-wrap">${coverHtml(game)}</div>
       <div class="game-copy">
         <div class="game-name">${esc(game.name)}</div>
         <div class="game-note">${esc(game.note || 'Jeg vil gerne spille dette')}</div>
       </div>
-      <input type="checkbox" value="${esc(game.id)}" ${state.selections.has(game.id) ? 'checked' : ''}>
+      ${selectedMarker()}
+      <input type="checkbox" value="${esc(game.id)}" aria-label="Stem på ${esc(game.name)}">
     </label>
   `).join('');
 
   $('#vote-content').innerHTML = `
     <div class="card" style="margin-bottom:10px">
       <strong>Stem på alle de spil, du gerne vil spille.</strong>
-      <p class="help">Du kan ændre din stemme, indtil den femte person har stemt. Resultatet er skjult indtil da.</p>
+      <p class="help">Din stemme kan ikke ændres, når den er gemt. Resultatet er skjult, indtil alle fem har stemt.</p>
     </div>
     <div class="games">${games}</div>
     <div class="sticky-action">
-      <button id="save-vote" class="primary" ${state.name ? '' : 'disabled'}>${data.viewerMainVote ? 'Opdater mine stemmer' : 'Gem mine stemmer'}</button>
+      <button id="save-vote" class="primary" ${state.name ? '' : 'disabled'}>Gem 0 stemmer</button>
       <span id="save-status" class="status">${state.name ? '' : 'Vælg dit navn først.'}</span>
     </div>
   `;
 
-  document.querySelectorAll('.game input').forEach(input => input.addEventListener('change', () => {
+  document.querySelectorAll('.game input[type="checkbox"]').forEach(input => input.addEventListener('change', () => {
     if (input.checked) state.selections.add(input.value); else state.selections.delete(input.value);
     input.closest('.game').classList.toggle('selected', input.checked);
+    updateSaveVoteLabel();
   }));
 
+  updateSaveVoteLabel();
   $('#save-vote')?.addEventListener('click', saveMainVote);
 }
 
@@ -125,21 +154,27 @@ async function saveMainVote() {
     await loadState();
   } catch (e) {
     $('#save-status').textContent = e.message;
-  } finally {
     if ($('#save-vote')) $('#save-vote').disabled = false;
   }
 }
 
 function renderTiebreak(data) {
-  state.tiebreakChoice = data.viewerTiebreakVote || null;
+  state.tiebreakChoice = null;
+
+  if (data.viewerHasTiebreakVote) {
+    $('#vote-content').innerHTML = voteReceipt('Omstemmen er afgivet', 'Din stemme i denne omstemning er gemt og kan ikke ændres.');
+    return;
+  }
+
   const cards = data.candidates.map(game => `
-    <label class="game ${state.tiebreakChoice === game.id ? 'selected' : ''}">
+    <label class="game">
       <div class="cover-wrap">${coverHtml(game)}</div>
       <div class="game-copy">
         <div class="game-name">${esc(game.name)}</div>
         <div class="game-note">${esc(game.note || 'Vælg dette spil i omstemningen')}</div>
       </div>
-      <input type="radio" name="tiebreak" value="${esc(game.id)}" ${state.tiebreakChoice === game.id ? 'checked' : ''}>
+      ${selectedMarker()}
+      <input type="radio" name="tiebreak" value="${esc(game.id)}" aria-label="Vælg ${esc(game.name)}">
     </label>
   `).join('');
 
@@ -147,11 +182,11 @@ function renderTiebreak(data) {
     <div class="card tiebreak-card">
       <p class="eyebrow">Omstemning · runde ${data.round}</p>
       <h2 class="tiebreak-heading">Der er lighed om førstepladsen</h2>
-      <p class="help">Vælg præcis ét af de førende spil. Når alle fem har stemt, afgøres runden automatisk.</p>
+      <p class="help">Vælg præcis ét af de førende spil. Stemmen kan ikke ændres, når den er gemt.</p>
     </div>
     <div class="games">${cards}</div>
     <div class="sticky-action">
-      <button id="save-tiebreak" class="primary" ${state.name && state.tiebreakChoice ? '' : 'disabled'}>Gem min omstemme</button>
+      <button id="save-tiebreak" class="primary" disabled>Gem min omstemme</button>
       <span id="tie-status" class="status">${state.name ? '' : 'Vælg dit navn først.'}</span>
     </div>
   `;
@@ -186,21 +221,37 @@ async function saveTiebreak() {
     await loadState();
   } catch (e) {
     $('#tie-status').textContent = e.message;
-  } finally {
     if ($('#save-tiebreak')) $('#save-tiebreak').disabled = false;
   }
 }
 
+function winnerShowcase(winner, mainResults, hadTiebreak = false) {
+  if (!winner) return '';
+  const mainWinner = mainResults?.games?.find((game) => game.id === winner.id);
+  const support = mainWinner?.count;
+  const total = mainResults?.voterCount || state.config?.voters?.length || 5;
+  const supportText = Number.isInteger(support)
+    ? `${support} af ${total} ville spille det i grundafstemningen.`
+    : 'Vinderen af månedens afstemning.';
+
+  return `
+    <div class="card success-card winner-showcase">
+      <div class="winner-trophy" aria-hidden="true">🏆</div>
+      <div class="winner-visual">${coverHtml(winner, 'result-cover winner-cover')}</div>
+      <div class="winner-copy">
+        <p class="eyebrow">Månedens spil</p>
+        <div class="winner">${esc(winner.name)}</div>
+        <p class="winner-support">${esc(supportText)}</p>
+        ${hadTiebreak ? '<p class="small winner-tie-note">Afgjort efter omstemning.</p>' : ''}
+      </div>
+    </div>`;
+}
+
 function renderDone(data) {
-  const winner = data.winner;
-  $('#vote-content').innerHTML = `
-    <div class="card success-card">
-      <p class="eyebrow">Afstemningen er lukket</p>
-      ${winner ? `<div class="winner">${esc(winner.name)}</div><p class="help">Alle fem har stemt, og vinderen er fundet${data.tiebreakRounds?.length ? ' efter omstemning' : ''}.</p>`
-      : '<div class="winner">Ingen vinder</div><p class="help">Der blev ikke afgivet stemmer på nogen spil.</p>'}
-    </div>
-    <div class="card"><strong>Resultatet er klar.</strong><p class="help">Se alle stemmer under fanen Resultat.</p></div>
-  `;
+  $('#vote-content').innerHTML = data.winner
+    ? `${winnerShowcase(data.winner, data.mainResults, Boolean(data.tiebreakRounds?.length))}
+       <div class="card"><strong>Resultatet er klar.</strong><p class="help">Se alle stemmer under fanen Resultat.</p></div>`
+    : `<div class="card success-card"><p class="eyebrow">Afstemningen er lukket</p><div class="winner">Ingen vinder</div><p class="help">Der blev ikke afgivet stemmer på nogen spil.</p></div>`;
 }
 
 async function loadState() {
@@ -224,7 +275,7 @@ function renderGameResults(games) {
     <div class="result-row">
       <div class="result-top">
         <div class="result-game">
-          ${imageUrl(g) ? `<img class="result-cover" src="${esc(imageUrl(g))}" alt="">` : ''}
+          ${imageUrl(g) ? `<img class="result-cover" src="${esc(imageUrl(g))}" alt="${esc(g.name)}">` : ''}
           <div class="rank-name"><span class="rank">${i+1}</span><span>${esc(g.name)}</span></div>
         </div>
         <div class="count">${g.count}</div>
@@ -260,7 +311,9 @@ async function loadResults() {
         <p class="help">${data.activeVoters.length}/5 har stemt. Mangler: ${esc((data.activeMissing || []).join(', '))}.</p>
       </div>` : '';
 
-    const winner = data.winner ? `<div class="card success-card"><p class="eyebrow">Vinder</p><div class="winner">${esc(data.winner.name)}</div></div>` : '';
+    const winner = data.winner
+      ? winnerShowcase(data.winner, data.mainResults, Boolean(data.tiebreakRounds?.length))
+      : '';
 
     $('#results-content').innerHTML = `
       ${winner}
