@@ -30,9 +30,10 @@
           "name": "El Grande",
           "bggId": 93,
           "imageKind": "board",
-          "imageUrl": "https://www.spookshow.net/games/files/elgrande.JPG",
+          "imageUrl": "https://i.blogs.es/91feca/el-grande-board/1024_2000.jpg",
           "imageFallbackUrls": [
-            "https://s3-ap-northeast-1.amazonaws.com/data-hoobby-net/images/post_image_e7442bc8-5bcd-4e96-8b7b-68ad3b4e870d.jpeg"
+            "https://www.jedisjeux.net/media/cache/full/uploads/img/p-110.jpg",
+            "https://i.ebayimg.com/images/g/baYAAOSwtg5nLZ8F/s-l1200.jpg"
           ],
           "note": "Områdekontrol på det klassiske Spanien-bræt, hvor flertal og timing er afgørende."
         },
@@ -113,6 +114,18 @@
             "https://b1803394.smushcdn.com/1803394/wp-content/uploads/2021/08/Architects-Play-Area-1024x768.jpeg?lossy=1&strip=1&webp=1"
           ],
           "note": "Arbejderplacering, hvor dine arbejdere kan samles på felter og fanges af andre."
+        },
+        {
+          "id": "warcraft-the-board-game",
+          "name": "WarCraft: The Board Game",
+          "bggId": 7479,
+          "imageKind": "board",
+          "imageUrl": "https://static.libsyn.com/p/assets/7/7/f/4/77f4744d084093a640be95ea3302a6a1/Warcraft_08.jpg",
+          "imageFallbackUrls": [
+            "https://i.ebayimg.com/00/s/MTYwMFgxNjAw/z/9B0AAOSwyGphigLE/%24_57.JPG?set_id=8800005007",
+            "https://images.finncdn.no/dynamic/960w/2024/10/vertical-0/12/5/375/177/155_0b885fa7-5a60-46fc-94ec-b4308de255d1.jpg"
+          ],
+          "note": "Warcraft III på et modulært hex-bræt: høst ressourcer, byg en hær og kæmp om kortet."
         }
       ]
     }
