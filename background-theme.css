@@ -1,0 +1,63 @@
+/* Decorative board-game tabletop background. Kept separate from the core UI styles. */
+html {
+  background: #2a211b;
+}
+
+body {
+  position: relative;
+  isolation: isolate;
+  background-color: #2a211b;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='880' height='650' viewBox='0 0 880 650'%3E%3Cg fill='none' stroke='%23f4dfb4' stroke-opacity='.28' stroke-width='3'%3E%3Crect x='42' y='64' width='152' height='94' rx='12' transform='rotate(-9 118 111)'/%3E%3Cpath d='M65 92h92M68 119h58' transform='rotate(-9 118 111)'/%3E%3Ccircle cx='157' cy='132' r='10'/%3E%3Crect x='708' y='70' width='98' height='146' rx='11' transform='rotate(11 757 143)'/%3E%3Cpath d='M724 105h59M724 128h43M724 179h61' transform='rotate(11 757 143)'/%3E%3Cpolygon points='286,64 321,84 321,124 286,144 251,124 251,84'/%3E%3Cpolygon points='356,104 391,124 391,164 356,184 321,164 321,124'/%3E%3Cpolygon points='286,144 321,164 321,204 286,224 251,204 251,164'/%3E%3Cpath d='M430 88h170v112H430zM458 88v112M486 88v112M514 88v112M542 88v112M570 88v112M430 116h170M430 144h170M430 172h170'/%3E%3Crect x='70' y='330' width='170' height='112' rx='16' transform='rotate(7 155 386)'/%3E%3Cpath d='M98 356l110 58M205 351L103 417' stroke-opacity='.16'/%3E%3Crect x='604' y='300' width='116' height='116' rx='18' transform='rotate(-8 662 358)'/%3E%3Ccircle cx='632' cy='330' r='7'/%3E%3Ccircle cx='690' cy='386' r='7'/%3E%3Ccircle cx='662' cy='358' r='7'/%3E%3Cpath d='M335 382c44-38 102-45 153-18s78 84 65 137'/%3E%3Cpath d='M356 410l32 18 30-19 33 20 31-15'/%3E%3C/g%3E%3Cg fill='%23d4aa57' fill-opacity='.22'%3E%3Ccircle cx='91' cy='248' r='22'/%3E%3Ccircle cx='136' cy='260' r='15'/%3E%3Ccircle cx='184' cy='244' r='18'/%3E%3Ccircle cx='766' cy='278' r='21'/%3E%3Ccircle cx='802' cy='303' r='13'/%3E%3Ccircle cx='272' cy='320' r='12'/%3E%3Ccircle cx='306' cy='337' r='18'/%3E%3Ccircle cx='540' cy='247' r='14'/%3E%3Ccircle cx='571' cy='267' r='9'/%3E%3Crect x='255' y='515' width='31' height='31' rx='4' transform='rotate(16 270 530)'/%3E%3Crect x='294' y='538' width='25' height='25' rx='4' transform='rotate(-12 306 550)'/%3E%3C/g%3E%3Cg fill='%23bd6543' fill-opacity='.20'%3E%3Cpath d='M515 485c0-18 14-32 32-32s32 14 32 32c0 12-7 23-17 28l20 45h-70l20-45c-10-5-17-16-17-28z'/%3E%3Cpath d='M735 507c0-14 11-25 25-25s25 11 25 25c0 10-5 18-13 22l16 36h-56l16-36c-8-4-13-12-13-22z'/%3E%3Cpath d='M135 525c0-13 11-24 24-24s24 11 24 24c0 9-5 17-13 21l15 34h-52l15-34c-8-4-13-12-13-21z'/%3E%3C/g%3E%3Cg fill='%23f1dfbd' fill-opacity='.13'%3E%3Crect x='390' y='515' width='96' height='54' rx='8' transform='rotate(-5 438 542)'/%3E%3Crect x='425' y='540' width='96' height='54' rx='8' transform='rotate(6 473 567)'/%3E%3C/g%3E%3C/svg%3E"),
+    radial-gradient(circle at 12% 18%, rgba(83,123,94,.25), transparent 30%),
+    radial-gradient(circle at 82% 72%, rgba(149,78,48,.20), transparent 32%),
+    repeating-linear-gradient(92deg, rgba(255,255,255,.018) 0 1px, transparent 1px 62px),
+    linear-gradient(135deg, #33271f 0%, #211a16 54%, #2c211b 100%);
+  background-size: 880px 650px, auto, auto, auto, auto;
+  background-attachment: fixed;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at center, rgba(18,30,25,.05) 25%, rgba(13,18,16,.36) 100%),
+    linear-gradient(180deg, rgba(11,20,17,.10), rgba(22,16,12,.18));
+}
+
+.shell {
+  position: relative;
+  z-index: 1;
+}
+
+/* A faint tabletop halo keeps the content readable while leaving the collage visible at the edges. */
+.shell::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: -16px -20px -28px;
+  border-radius: 32px;
+  background: linear-gradient(180deg, rgba(10,27,23,.24), rgba(19,20,16,.10));
+  box-shadow: 0 24px 70px rgba(8,10,8,.12);
+  pointer-events: none;
+}
+
+@media (max-width: 620px) {
+  body {
+    background-size: 660px 488px, auto, auto, auto, auto;
+    background-position: 42% 0, center, center, center, center;
+  }
+
+  .shell::before {
+    inset: -7px -5px -18px;
+    border-radius: 22px;
+    background: linear-gradient(180deg, rgba(10,27,23,.14), rgba(19,20,16,.07));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body { background-attachment: scroll; }
+}
