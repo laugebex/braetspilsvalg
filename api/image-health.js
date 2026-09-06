@@ -25,6 +25,30 @@ async function check(url) {
   }
 }
 
+async function checkCandidates(game) {
+  const candidates = [game.imageUrl, ...(game.imageFallbackUrls || [])].filter(Boolean);
+  const checks = [];
+  let workingUrl = null;
+
+  for (const url of candidates) {
+    const result = await check(url);
+    checks.push({ url, ...result });
+    if (!workingUrl && result.ok) workingUrl = url;
+  }
+
+  return {
+    id: game.id,
+    name: game.name,
+    kind: game.imageKind || '',
+    primaryUrl: game.imageUrl || '',
+    primaryOk: Boolean(checks[0]?.ok),
+    workingUrl,
+    usedFallback: Boolean(workingUrl && workingUrl !== game.imageUrl),
+    ok: game.imageKind === 'board' && Boolean(workingUrl),
+    candidates: checks
+  };
+}
+
 module.exports = async function handler(req, res) {
   if (req.method !== 'GET') {
     res.statusCode = 405;
@@ -39,25 +63,15 @@ module.exports = async function handler(req, res) {
     return res.end(JSON.stringify({ error: 'Afstemningen findes ikke.' }));
   }
 
-  const games = await Promise.all((poll.games || []).map(async (game) => {
-    const result = await check(game.imageUrl);
-    return {
-      id: game.id,
-      name: game.name,
-      kind: game.imageKind || '',
-      url: game.imageUrl || '',
-      ok: game.imageKind === 'board' && result.ok,
-      status: result.status,
-      type: result.type
-    };
-  }));
+  const games = await Promise.all((poll.games || []).map(checkCandidates));
 
   res.statusCode = 200;
   res.setHeader('Content-Type', 'application/json; charset=utf-8');
-  res.setHeader('Cache-Control', 'public, s-maxage=900, stale-while-revalidate=3600');
+  res.setHeader('Cache-Control', 'no-store');
   res.end(JSON.stringify({
     pollId: poll.id,
     ok: games.every((game) => game.ok),
+    primaryOk: games.every((game) => game.primaryOk),
     checkedAt: new Date().toISOString(),
     games
   }));
