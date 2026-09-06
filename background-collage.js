@@ -1,5 +1,5 @@
 (() => {
-  const MAX_TILES = 10;
+  const MAX_TILES = 6;
 
   async function getConfig() {
     const response = await fetch('/api/config', { cache: 'no-store' });
@@ -51,7 +51,7 @@
       games.slice(0, MAX_TILES).forEach((game, index) => addTile(backdrop, game, index));
       document.documentElement.classList.add('has-boardgame-collage');
     } catch (error) {
-      console.warn('Kunne ikke indlæse brætspilscollage.', error);
+      console.warn('Kunne ikke indlæse brætspilsbaggrund.', error);
       backdrop.remove();
     }
   }
