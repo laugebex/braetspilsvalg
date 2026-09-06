@@ -6,13 +6,13 @@ module.exports = async function handler(req, res) {
   try {
     const poll = getPoll(req.query.pollId);
     const name = poll ? canonicalVoter(poll, req.query.name) : null;
-    if (!poll || !name) return json(res, 200, { vote: null });
+    if (!poll || !name) return json(res, 200, { hasVoted: false });
+
     const raw = await command(['HGET', votesKey(poll.id), voterKey(name)]);
-    if (!raw) return json(res, 200, { vote: null });
-    return json(res, 200, { vote: typeof raw === 'string' ? JSON.parse(raw) : raw });
+    return json(res, 200, { hasVoted: Boolean(raw) });
   } catch (error) {
-    if (error.code === 'STORAGE_NOT_CONFIGURED') return json(res, 200, { vote: null, storageConfigured: false });
+    if (error.code === 'STORAGE_NOT_CONFIGURED') return json(res, 200, { hasVoted: false, storageConfigured: false });
     console.error(error);
-    return json(res, 500, { error: 'Kunne ikke hente stemmen.' });
+    return json(res, 500, { error: 'Kunne ikke hente stemmestatus.' });
   }
 };
