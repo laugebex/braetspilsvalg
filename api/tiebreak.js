@@ -8,6 +8,7 @@ module.exports = async function handler(req, res) {
     const body = typeof req.body === 'string' ? JSON.parse(req.body) : (req.body || {});
     const poll = getPoll(body.pollId);
     if (!poll) return json(res, 404, { error: 'Afstemningen findes ikke.' });
+    if (poll.status !== 'open') return json(res, 409, { error: 'Afstemningen er lukket.' });
 
     const name = canonicalVoter(poll, body.name);
     if (!name) return json(res, 400, { error: 'Vælg en af de fem deltagere.' });
