@@ -139,6 +139,42 @@
       "played": [],
       "games": [
         {
+          "id": "gunsen",
+          "name": "Gunsen: The Battle for Toshi Ranbo",
+          "bggId": 449018,
+          "imageKind": "board",
+          "imageUrl": "https://braetspilsvalg-rg-ae2c.vercel.app/gunsen-november.jpg",
+          "imageFallbackUrls": [
+            "https://store.asmodee.com/cdn/shop/files/ODGTBF0101-image3_2000_1780x.jpg?v=1771425292",
+            "https://cdn.svc.asmodee.net/production-l5r/uploads/image-converter/2026/05/L5R-events-at-Gen-Con-announce_News_Header-Image-1900x1040.webp"
+          ],
+          "note": "Klaner i Rokugan kæmper om Toshi Ranbo med områdekontrol, ordrer og taktiske valg."
+        },
+        {
+          "id": "quartermaster-general-1914",
+          "name": "Quartermaster General: 1914",
+          "bggId": 208773,
+          "imageKind": "board",
+          "imageUrl": "https://braetspilsvalg-rg-ae2c.vercel.app/quartermaster-1914-november.jpg",
+          "imageFallbackUrls": [
+            "https://img-api.cloud.mediaset.net/api/images/kn/v1/image_main/1200/675/59150345?r=13",
+            "https://cdn11.bigcommerce.com/s-0iq5oprw98/images/stencil/1280x1280/products/13143/21101/71W1vxmxu5L._AC_SL1500___64751.1740864831.jpg?c=1"
+          ],
+          "note": "Kortdrevet spil om 1. verdenskrig for fem stormagter fordelt på to hold."
+        },
+        {
+          "id": "nature",
+          "name": "Nature",
+          "bggId": 330152,
+          "imageKind": "board",
+          "imageUrl": "https://braetspilsvalg-rg-ae2c.vercel.app/nature-november.jpg",
+          "imageFallbackUrls": [
+            "https://www.northstargames.com/cdn/shop/files/SQ-WEB-Nature---In-Play---Nature-Core-8.jpg?v=1738255164&width=500",
+            "https://i.shgcdn.com/8b60eccf-d01b-4f76-a2e6-11b7462195f4/-/format/auto/-/preview/3000x3000/-/quality/lighter/"
+          ],
+          "note": "Udvikl arter med forskellige egenskaber, og tilpas dem til konkurrencen om føde og overlevelse."
+        },
+        {
           "id": "hansa-teutonica",
           "name": "Hansa Teutonica",
           "bggId": 43015,
@@ -179,8 +215,13 @@
           "name": "Chaos in the Old World",
           "bggId": 43111,
           "imageKind": "board",
-          "imageUrl": "https://therewillbe.games/images/member_images/Jackwraith/pic831745.jpg",
-          "note": "Fem asymmetriske kaosguder kæmper om at korrumpere den samme verden."
+          "imageUrl": "https://slaska-ksiezniczka.pl/photos/chaos-w-starym-swiecie.jpg",
+          "note": "Fem asymmetriske kaosguder kæmper om at korrumpere den samme verden.",
+          "imageFallbackUrls": [
+            "https://avatars.dzeninfra.ru/get-zen_doc/927575/pub_62781d01fabf45579158071a_62781d13bcf943590277eae5/scale_2400",
+            "https://cdn.anyfinder.eu/assets/u76GM9tBqgVMhPuSODHf65VgaNleTVOIrTq2zUx8am40dlut3AKs4o0QipRRy7S7?height=768",
+            "https://therewillbe.games/images/member_images/Jackwraith/pic831745.jpg"
+          ]
         },
         {
           "id": "agricola",
@@ -195,9 +236,11 @@
           "name": "Nexus Ops",
           "bggId": 15363,
           "imageKind": "board",
-          "imageUrl": "https://www.fantasyflightgames.com/media/ffg_content/nexus-ops/preview2/nexus-ops-map.png",
+          "imageUrl": "https://www.ultraboardgames.com/nexus-ops/gfx/game15.jpg",
           "imageFallbackUrls": [
-            "https://images-cdn.fantasyflightgames.com/ffg_content/nexus-ops/preview2/nexus-ops-map.png"
+            "https://www.planetongames.com/6032-large_default/nexus-ops.jpg",
+            "https://images-cdn.fantasyflightgames.com/ffg_content/nexus-ops/preview2/nexus-ops-map.png",
+            "https://www.fantasyflightgames.com/media/ffg_content/nexus-ops/preview2/nexus-ops-map.png"
           ],
           "note": "2nd Edition: modulært sci-fi-bræt med missioner, kampe og direkte konflikt."
         },
