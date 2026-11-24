@@ -250,7 +250,8 @@
           "bggId": 425549,
           "imageKind": "board",
           "imageUrl": "https://www.vindjeu.eu/prd/wp-content/uploads/2025/05/4079-Moon-Colony-10.jpg",
-          "note": "Opbyg en månekoloni, mens hændelser og katastrofer ændrer vilkårene."
+          "note": "Opbyg en månekoloni, mens hændelser og katastrofer ændrer vilkårene.",
+          "hidden": true
         },
         {
           "id": "ethnos",
@@ -289,7 +290,8 @@
             "https://i.ebayimg.com/00/s/MTYwMFgxNjAw/z/9B0AAOSwyGphigLE/%24_57.JPG?set_id=8800005007",
             "https://images.finncdn.no/dynamic/960w/2024/10/vertical-0/12/5/375/177/155_0b885fa7-5a60-46fc-94ec-b4308de255d1.jpg"
           ],
-          "note": "Warcraft III på et modulært hex-bræt: høst ressourcer, byg en hær og kæmp om kortet."
+          "note": "Warcraft III på et modulært hex-bræt: høst ressourcer, byg en hær og kæmp om kortet.",
+          "hidden": true
         }
       ]
     }

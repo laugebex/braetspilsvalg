@@ -16,7 +16,11 @@ module.exports = async function handler(req, res) {
     const election = await loadElection(poll);
     if (election.phase !== 'main') return json(res, 409, { error: 'Grundafstemningen er allerede lukket.' });
 
-    const allowed = new Set(poll.games.map((g) => g.id));
+    const hidden = new Set(poll.games.filter((g) => g.hidden).map((g) => g.id));
+    if (Array.isArray(body.selections) && body.selections.some((id) => hidden.has(id))) {
+      return json(res, 409, { error: 'Spiludvalget er ændret. Genindlæs siden, før du stemmer.' });
+    }
+    const allowed = new Set(poll.games.filter((g) => !g.hidden).map((g) => g.id));
     const selections = Array.isArray(body.selections)
       ? [...new Set(body.selections.filter((id) => allowed.has(id)))]
       : [];

@@ -121,7 +121,7 @@ function renderMainVote(data) {
     return;
   }
 
-  const games = state.poll.games.map(game => `
+  const games = state.poll.games.filter(game => !game.hidden).map(game => `
     <label class="game">
       <div class="cover-wrap">${coverHtml(game)}</div>
       <div class="game-copy">
