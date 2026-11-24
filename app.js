@@ -38,10 +38,26 @@ function imageUrl(game) {
   return game?.bggId ? state.images[String(game.bggId)] || '' : '';
 }
 
+function handleCoverError(img) {
+  const game = state.poll?.games?.find(g => g.name === img.alt);
+  const candidates = [imageUrl(game), ...(game?.imageFallbackUrls || [])].filter(Boolean);
+  const current = img.currentSrc || img.src;
+  const index = candidates.findIndex(url => new URL(url, location.href).href === current);
+  const next = candidates[index + 1];
+  if (next && index >= 0) {
+    img.src = next;
+    return;
+  }
+  const fallback = document.createElement('div');
+  fallback.className = 'cover-fallback';
+  fallback.textContent = img.alt || 'Billede';
+  img.replaceWith(fallback);
+}
+
 function coverHtml(game, cls = 'game-cover') {
   const url = imageUrl(game);
   if (!url) return `<div class="cover-fallback">${esc(game.name)}</div>`;
-  return `<img class="${cls}" src="${esc(url)}" alt="${esc(game.name)}" loading="lazy" onerror="this.outerHTML='<div class=&quot;cover-fallback&quot;>Billede</div>'">`;
+  return `<img class="${cls}" src="${esc(url)}" alt="${esc(game.name)}" loading="lazy" onerror="handleCoverError(this)">`;
 }
 
 function renderVoterOptions() {
@@ -275,7 +291,7 @@ function renderGameResults(games) {
     <div class="result-row">
       <div class="result-top">
         <div class="result-game">
-          ${imageUrl(g) ? `<img class="result-cover" src="${esc(imageUrl(g))}" alt="${esc(g.name)}">` : ''}
+          ${imageUrl(g) ? coverHtml(g, "result-cover") : ''}
           <div class="rank-name"><span class="rank">${i+1}</span><span>${esc(g.name)}</span></div>
         </div>
         <div class="count">${g.count}</div>
